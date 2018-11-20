@@ -5,6 +5,11 @@ import torchvision
 import random
 import math
 
+A_MIN = -100
+A_MAX = 100
+B_MIN = -100
+B_MAX = 100
+
 
 
 # create training data
@@ -16,11 +21,13 @@ class DataPoint:
     def __str__(self):
         return str(self.x) + " -> " + str(self.y)
 data = []
-for i in range(0,1000):
-    a = float(random.randint(0,100))
-    b = float(random.randint(0,100))
+for i in range(0,3000):
+    a = float(random.randint(A_MIN,A_MAX))
+    b = float(random.randint(B_MIN,B_MAX))
+    if b == 0:
+        b = 1
     x = torch.tensor([a,b])
-    y = torch.tensor([a+b])
+    y = torch.tensor([a/b])
     data.append(DataPoint(x,y))
 
 
@@ -49,10 +56,10 @@ class AdderNet(nn.Module):
 
         return out
 
-hidden_width = 512
-num_hidden = 8
-num_epochs = 10
-learning_rate = 0.001
+hidden_width = 384
+num_hidden = 5
+num_epochs = 200
+learning_rate = 0.002
 
 model = AdderNet(num_hidden, hidden_width)
 lossFunction = nn.L1Loss()
@@ -75,7 +82,8 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
 
-    print avgLoss / len(data)
+    print model(torch.tensor([float(500), float(1000)]))
+    print "avg loss: ", avgLoss / len(data)
 
 
 
@@ -83,13 +91,18 @@ for epoch in range(num_epochs):
 avgLoss = 0
 test_size = 50
 for i in range(0,test_size):
-    a = float(random.randint(0,100))
-    b = float(random.randint(0,100))
+    a = float(random.randint(A_MIN, A_MAX))
+    b = float(random.randint(B_MIN, B_MAX))
+    if b == 0:
+        b = 1
     x = torch.tensor([a,b])
-    y = torch.tensor([a+b])
+    y = torch.tensor([a/b])
     out = model(x)
     loss = abs(out.item() - y.item())
     avgLoss += loss
+
+    print "test:", a,b, a/b, model(x)
+
 
 avgLoss /= test_size
 print "test loss:", avgLoss
