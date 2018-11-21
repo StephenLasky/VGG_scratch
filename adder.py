@@ -19,7 +19,7 @@ HIDDEN_WIDTH = 512
 HIDDEN_LAYERS = 10
 LEARNING_RATE = 0.5
 
-NUM_EPOCHS = 5000
+NUM_EPOCHS = 1000
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 if torch.cuda.is_available():
@@ -82,7 +82,7 @@ def adjust_learning_rate(optimizer, epoch):
         # MIN = 0.001
         # if lr < MIN:
         #     lr = MIN
-        if epoch % 500 == 0:
+        if epoch % 100 == 0:
             lr *= 0.1
             print("learning rate:",lr)
         param_group['lr'] = lr
@@ -142,7 +142,7 @@ for epoch in range(NUM_EPOCHS):
 
     adjust_learning_rate(optimizer, epoch)
 
-    if epoch % 100 == 0:
+    if epoch % 5 == 0:
         print("AVG Epoch loss:", epoch_loss / TRAIN_SET_BATCHES)
 print("--- %s seconds ---" % (time.time() - train_start_time))
 
