@@ -12,6 +12,8 @@ B_MIN = -100
 B_MAX = 100
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+if torch.cuda.is_available():
+    torch.set_default_tensor_type('torch.cuda.FloatTensor')
 print("Using device:", device   )
 
 
