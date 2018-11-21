@@ -12,7 +12,7 @@ B_MIN = -100
 B_MAX = 100
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
+print("Using device:", device   )
 
 
 
