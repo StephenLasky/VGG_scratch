@@ -78,6 +78,7 @@ class AdderNet(nn.Module):
 def adjust_learning_rate(optimizer, epoch):
     """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
     for param_group in optimizer.param_groups:
+        lr = param_group['lr']
         MIN = 0.001
         if lr < MIN:
             lr = MIN
