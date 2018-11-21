@@ -11,29 +11,41 @@ A_MAX = 100
 B_MIN = -100
 B_MAX = 100
 
+BATCH_SIZE = 64
+TRAIN_SET_BATCHES = 32 * 4
+TRAIN_SET_SIZE = BATCH_SIZE * TRAIN_SET_BATCHES
+
+HIDDEN_WIDTH = 256
+HIDDEN_LAYERS = 4
+LEARNING_RATE = 0.0015
+
+NUM_EPOCHS = 200
+
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 if torch.cuda.is_available():
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
-print("Using device:", device   )
-
-
+print("Using device:", device)
 
 # create training data
-class DataPoint:
-    def __init__(self,x,y):
-        self.x = x
-        self.y = y
-    def __str__(self):
-        return str(self.x) + " -> " + str(self.y)
-data = []
-for i in range(0,3000):
-    a = float(random.randint(A_MIN,A_MAX))
-    b = float(random.randint(B_MIN,B_MAX))
-    if b == 0:
-        b = 1
-    x = torch.tensor([a,b], device=device)
-    y = torch.tensor([a/b], device=device)
-    data.append(DataPoint(x,y))
+dx = []
+dy = []
+for i in range(TRAIN_SET_SIZE / BATCH_SIZE):
+    dx_row = []
+    dy_row = []
+    for j in range(BATCH_SIZE):
+        a = float(random.randint(A_MIN,A_MAX))
+        b = float(random.randint(B_MIN,B_MAX))
+        if b == 0:
+            b = 1
+        dx_row.append([a,b])
+        dy_row.append([a/b])
+
+    dx.append(torch.tensor(dx_row))
+    # dy_row = torch.tensor(dy_row)
+    dy.append(torch.tensor(dy_row))
+
+
+
 
 
 
@@ -65,10 +77,9 @@ class AdderNet(nn.Module):
 
 
 # begin training
-hidden_width = 128
-num_hidden = 4
-num_epochs = 5
-learning_rate = 0.002
+hidden_width = HIDDEN_WIDTH
+num_hidden = HIDDEN_LAYERS
+learning_rate = LEARNING_RATE
 
 model = AdderNet(num_hidden, hidden_width)
 if torch.cuda.is_available():
@@ -79,47 +90,42 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 # print model.forward(torch.Tensor([2,2]))
 
-train_start_time = time.time()
-for epoch in range(num_epochs):
-    avgLoss = torch.tensor([0.0], device=device).item()
-    for i in range(0,len(data)):
-        d = data[i]
-        x = d.x
-        y = d.y
+
+# train_start_time = time.time()
+# for epoch in range(num_epochs):
+#     avgLoss = torch.tensor([0.0], device=device).item()
+#     for i in range(0,len(data)):
+#         d = data[i]
+#         x = d.x
+#         y = d.y
+#
+#         out = model.forward(x)
+#         loss = lossFunction(out, y)
+#         avgLoss += loss.item()
+#
+#         optimizer.zero_grad()
+#         loss.backward()
+#         optimizer.step()
+#
+#     print(model(torch.tensor([float(500), float(1000)], device=device)))
+#     print("avg loss: ", avgLoss / len(data))
+# print("--- %s seconds ---" % (time.time() - train_start_time))
+
+for epoch in range(NUM_EPOCHS):
+    epoch_loss = 0.0
+    for batch in range(TRAIN_SET_BATCHES):
+        x = dx[batch]
+        y = dy[batch]
 
         out = model.forward(x)
-        loss = lossFunction(out, y)
-        avgLoss += loss.item()
+        loss = lossFunction(out,y)
+        epoch_loss += loss.item()
 
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
 
-    print(model(torch.tensor([float(500), float(1000)], device=device)))
-    print("avg loss: ", avgLoss / len(data))
-print("--- %s seconds ---" % (time.time() - train_start_time))
+    print("AVG Epoch loss:", epoch_loss / TRAIN_SET_BATCHES)
 
 
 # test
-avgLoss = 0
-test_size = 50
-for i in range(0,test_size):
-    a = float(random.randint(A_MIN, A_MAX))
-    b = float(random.randint(B_MIN, B_MAX))
-    if b == 0:
-        b = 1
-    x = torch.tensor([a,b], device=device)
-    y = torch.tensor([a/b], device=device)
-    out = model(x)
-    loss = abs(out.item() - y.item())
-    avgLoss += loss
-
-    print("test:", a,b, a/b, model(x))
-
-
-avgLoss /= test_size
-print("test loss:", avgLoss)
-
-print("Model's state_dict:")
-for param_tensor in model.state_dict():
-    print(param_tensor, "\t", model.state_dict()[param_tensor].size())
