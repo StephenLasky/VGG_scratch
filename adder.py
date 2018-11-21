@@ -75,6 +75,12 @@ class AdderNet(nn.Module):
 
         return out
 
+def adjust_learning_rate(optimizer, epoch):
+    """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
+    for param_group in optimizer.param_groups:
+        lr = param_group['lr'] * (0.5 ** (epoch // 100))
+        param_group['lr'] = lr
+
 
 # begin training
 hidden_width = HIDDEN_WIDTH
@@ -126,6 +132,8 @@ for epoch in range(NUM_EPOCHS):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+
+    adjust_learning_rate(optimizer, epoch)
 
     if epoch % 100 == 0:
         print("AVG Epoch loss:", epoch_loss / TRAIN_SET_BATCHES)
