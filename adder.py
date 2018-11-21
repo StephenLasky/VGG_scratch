@@ -29,7 +29,7 @@ print("Using device:", device)
 # create training data
 dx = []
 dy = []
-for i in range(TRAIN_SET_SIZE / BATCH_SIZE):
+for i in range(TRAIN_SET_BATCHES):
     dx_row = []
     dy_row = []
     for j in range(BATCH_SIZE):
