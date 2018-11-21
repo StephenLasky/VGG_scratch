@@ -38,7 +38,7 @@ for i in range(TRAIN_SET_BATCHES):
         if b == 0:
             b = 1
         dx_row.append([a,b])
-        dy_row.append([a/b])
+        dy_row.append([a+b])
 
     dx.append(torch.tensor(dx_row))
     # dy_row = torch.tensor(dy_row)
