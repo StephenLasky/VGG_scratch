@@ -11,7 +11,7 @@ A_MAX = 100
 B_MIN = -100
 B_MAX = 100
 
-BATCH_SIZE = 64
+BATCH_SIZE = 256
 TRAIN_SET_BATCHES = 32 * 4
 TRAIN_SET_SIZE = BATCH_SIZE * TRAIN_SET_BATCHES
 
@@ -19,7 +19,7 @@ HIDDEN_WIDTH = 256
 HIDDEN_LAYERS = 4
 LEARNING_RATE = 0.0015
 
-NUM_EPOCHS = 200
+NUM_EPOCHS = 50
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 if torch.cuda.is_available():
