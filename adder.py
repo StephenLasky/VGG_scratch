@@ -29,8 +29,8 @@ for i in range(0,3000):
     b = float(random.randint(B_MIN,B_MAX))
     if b == 0:
         b = 1
-    x = torch.tensor([a,b])
-    y = torch.tensor([a/b])
+    x = torch.tensor([a,b], device=device)
+    y = torch.tensor([a/b], device=device)
     data.append(DataPoint(x,y))
 
 
@@ -69,6 +69,9 @@ num_epochs = 5
 learning_rate = 0.002
 
 model = AdderNet(num_hidden, hidden_width)
+if torch.cuda.is_available():
+    model.cuda(device)
+
 lossFunction = nn.L1Loss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
@@ -103,8 +106,8 @@ for i in range(0,test_size):
     b = float(random.randint(B_MIN, B_MAX))
     if b == 0:
         b = 1
-    x = torch.tensor([a,b])
-    y = torch.tensor([a/b])
+    x = torch.tensor([a,b], device=device)
+    y = torch.tensor([a/b], device=device)
     out = model(x)
     loss = abs(out.item() - y.item())
     avgLoss += loss
