@@ -12,11 +12,11 @@ B_MIN = -100
 B_MAX = 100
 
 BATCH_SIZE = 2048
-TRAIN_SET_BATCHES = 16
+TRAIN_SET_BATCHES = 2
 TRAIN_SET_SIZE = BATCH_SIZE * TRAIN_SET_BATCHES
 
 HIDDEN_WIDTH = 512
-HIDDEN_LAYERS = 1
+HIDDEN_LAYERS = 2
 LEARNING_RATE = 0.001
 
 NUM_EPOCHS = 500
@@ -126,7 +126,7 @@ for epoch in range(NUM_EPOCHS):
         loss.backward()
         optimizer.step()
 
-    if epoch % 100:
+    if epoch % 100 == 0:
         print("AVG Epoch loss:", epoch_loss / TRAIN_SET_BATCHES)
 print("--- %s seconds ---" % (time.time() - train_start_time))
 
