@@ -14,7 +14,6 @@ B_MAX = 100
 
 
 # create training data
-print "Started"
 class DataPoint:
     def __init__(self,x,y):
         self.x = x
