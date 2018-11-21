@@ -12,14 +12,14 @@ B_MIN = -100
 B_MAX = 100
 
 BATCH_SIZE = 256
-TRAIN_SET_BATCHES = 32 * 4
+TRAIN_SET_BATCHES = 4
 TRAIN_SET_SIZE = BATCH_SIZE * TRAIN_SET_BATCHES
 
 HIDDEN_WIDTH = 256
 HIDDEN_LAYERS = 4
 LEARNING_RATE = 0.0015
 
-NUM_EPOCHS = 50
+NUM_EPOCHS = 500
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 if torch.cuda.is_available():
@@ -111,6 +111,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 #     print("avg loss: ", avgLoss / len(data))
 # print("--- %s seconds ---" % (time.time() - train_start_time))
 
+train_start_time = time.time()
 for epoch in range(NUM_EPOCHS):
     epoch_loss = 0.0
     for batch in range(TRAIN_SET_BATCHES):
@@ -126,6 +127,6 @@ for epoch in range(NUM_EPOCHS):
         optimizer.step()
 
     print("AVG Epoch loss:", epoch_loss / TRAIN_SET_BATCHES)
-
+print("--- %s seconds ---" % (time.time() - train_start_time))
 
 # test
