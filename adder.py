@@ -85,6 +85,7 @@ for epoch in range(num_epochs):
         x = d.x
         y = d.y
 
+        print(x)
         out = model.forward(x)
         loss = lossFunction(out, y)
         avgLoss += loss.item()
