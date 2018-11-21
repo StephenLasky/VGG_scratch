@@ -63,8 +63,8 @@ class AdderNet(nn.Module):
 
 
 # begin training
-hidden_width = 128
-num_hidden = 3
+hidden_width = 512
+num_hidden = 4
 num_epochs = 5
 learning_rate = 0.002
 
