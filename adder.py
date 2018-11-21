@@ -68,9 +68,7 @@ num_hidden = 3
 num_epochs = 5
 learning_rate = 0.002
 
-model = AdderNet(num_hidden, hidden_width)
-if torch.cuda.is_available():
-    model.cuda(device)
+model = AdderNet(num_hidden, hidden_width).to(device)
 
 lossFunction = nn.L1Loss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
