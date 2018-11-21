@@ -63,7 +63,7 @@ class AdderNet(nn.Module):
 
 
 # begin training
-hidden_width = 512
+hidden_width = 128
 num_hidden = 4
 num_epochs = 5
 learning_rate = 0.002
@@ -77,7 +77,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 train_start_time = time.time()
 for epoch in range(num_epochs):
-    avgLoss = torch.tensor([0.0]).item()
+    avgLoss = torch.tensor([0.0], device=device).item()
     for i in range(0,len(data)):
         d = data[i]
         x = d.x
@@ -91,7 +91,7 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
 
-    print(model(torch.tensor([float(500), float(1000)])))
+    print(model(torch.tensor([float(500), float(1000)], device=device)))
     print("avg loss: ", avgLoss / len(data))
 print("--- %s seconds ---" % (time.time() - train_start_time))
 
