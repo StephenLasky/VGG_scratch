@@ -143,7 +143,7 @@ for epoch in range(NUM_EPOCHS):
     adjust_learning_rate(optimizer, epoch)
 
     if epoch % 20 == 0:
-        print("AVG Epoch loss:", epoch_loss / TRAIN_SET_BATCHES)
+        print("Loss @ Epoch "+ str(epoch) +":", epoch_loss / TRAIN_SET_BATCHES)
 print("--- %s seconds ---" % (time.time() - train_start_time))
 
 
