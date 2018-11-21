@@ -6,10 +6,10 @@ import random
 import math
 import time
 
-A_MIN = -100
-A_MAX = 100
-B_MIN = -100
-B_MAX = 100
+A_MIN = -10
+A_MAX = 10
+B_MIN = -10
+B_MAX = 10
 
 BATCH_SIZE = 1024 * 2
 TRAIN_SET_BATCHES = 4
