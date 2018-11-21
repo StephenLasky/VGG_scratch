@@ -4,6 +4,7 @@ import torchvision
 
 import random
 import math
+import time
 
 A_MIN = -100
 A_MAX = 100
@@ -44,6 +45,8 @@ class AdderNet(nn.Module):
         for i in range(num_hidden):
             self.hiddenLayers.append(nn.Linear(hidden_width, hidden_width))
 
+        self.hiddenLayers = nn.ModuleList(self.hiddenLayers)  # <--- causes DRAMATIC slowdown!
+
     def forward(self, x):
         out = self.inputLayer(x)
         out = self.relu(out)
@@ -56,9 +59,11 @@ class AdderNet(nn.Module):
 
         return out
 
-hidden_width = 384
-num_hidden = 5
-num_epochs = 200
+
+# begin training
+hidden_width = 128
+num_hidden = 3
+num_epochs = 5
 learning_rate = 0.002
 
 model = AdderNet(num_hidden, hidden_width)
@@ -67,6 +72,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 # print model.forward(torch.Tensor([2,2]))
 
+train_start_time = time.time()
 for epoch in range(num_epochs):
     avgLoss = torch.tensor([0.0]).item()
     for i in range(0,len(data)):
@@ -82,9 +88,9 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
 
-    print model(torch.tensor([float(500), float(1000)]))
-    print "avg loss: ", avgLoss / len(data)
-
+    print(model(torch.tensor([float(500), float(1000)])))
+    print("avg loss: ", avgLoss / len(data))
+print("--- %s seconds ---" % (time.time() - train_start_time))
 
 
 # test
@@ -101,8 +107,12 @@ for i in range(0,test_size):
     loss = abs(out.item() - y.item())
     avgLoss += loss
 
-    print "test:", a,b, a/b, model(x)
+    print("test:", a,b, a/b, model(x))
 
 
 avgLoss /= test_size
-print "test loss:", avgLoss
+print("test loss:", avgLoss)
+
+print("Model's state_dict:")
+for param_tensor in model.state_dict():
+    print(param_tensor, "\t", model.state_dict()[param_tensor].size())
