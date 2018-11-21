@@ -99,8 +99,8 @@ if torch.cuda.is_available():
     model = model.cuda()
 
 lossFunction = nn.L1Loss()
-# optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-optimizer = torch.optim.ASGD(model.parameters(), lr=learning_rate)
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+# optimizer = torch.optim.ASGD(model.parameters(), lr=learning_rate)
 
 # print model.forward(torch.Tensor([2,2]))
 
