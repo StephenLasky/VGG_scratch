@@ -44,7 +44,7 @@ class AdderNet(nn.Module):
         for i in range(num_hidden):
             self.hiddenLayers.append(nn.Linear(hidden_width, hidden_width))
 
-        self.hiddenLayers = nn.ModuleList(self.hiddenLayers)  # <--- causes DRAMATIC slowdown!
+        # self.hiddenLayers = nn.ModuleList(self.hiddenLayers)  # <--- causes DRAMATIC slowdown!
 
     def forward(self, x):
         out = self.inputLayer(x)
