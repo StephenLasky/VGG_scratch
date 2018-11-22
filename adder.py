@@ -19,7 +19,7 @@ HIDDEN_WIDTH = 512
 HIDDEN_LAYERS = 10
 LEARNING_RATE = 0.01
 
-NUM_EPOCHS = 2000
+NUM_EPOCHS = 1000
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 if torch.cuda.is_available():
@@ -77,6 +77,7 @@ class AdderNet(nn.Module):
 
 def adjust_learning_rate(optimizer, epoch):
     """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
+    pass
     for param_group in optimizer.param_groups:
         lr = param_group['lr']
         # MIN = 0.001
