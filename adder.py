@@ -17,7 +17,8 @@ TRAIN_SET_SIZE = BATCH_SIZE * TRAIN_SET_BATCHES
 
 HIDDEN_WIDTH = 128
 HIDDEN_LAYERS = 4
-LEARNING_RATE = 0.01 / 16
+LEARNING_RATE = 0.01 / 32
+LR_DECAY = 4
 
 NUM_EPOCHS = 10000
 
@@ -82,7 +83,7 @@ def adjust_learning_rate(optimizer, epoch):
         # MIN = 0.001
         # if lr < MIN:
         #     lr = MIN
-        if epoch != 0 and epoch % int(NUM_EPOCHS / 8) == 0:
+        if epoch != 0 and epoch % int(NUM_EPOCHS / LR_DECAY) == 0:
             lr *= 0.5
             print("learning rate:",lr)
         param_group['lr'] = lr
