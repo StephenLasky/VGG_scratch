@@ -19,7 +19,7 @@ HIDDEN_WIDTH = 128
 HIDDEN_LAYERS = 2
 LEARNING_RATE = 0.000018
 
-NUM_EPOCHS = 1000
+NUM_EPOCHS = 10000
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 if torch.cuda.is_available():
