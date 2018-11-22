@@ -82,7 +82,7 @@ def adjust_learning_rate(optimizer, epoch):
         # MIN = 0.001
         # if lr < MIN:
         #     lr = MIN
-        if epoch != 0 and epoch % int(NUM_EPOCHS / 4) == 0:
+        if epoch != 0 and epoch % int(NUM_EPOCHS / 8) == 0:
             lr *= 0.5
             print("learning rate:",lr)
         param_group['lr'] = lr
