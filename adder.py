@@ -17,14 +17,14 @@ TRAIN_SET_SIZE = BATCH_SIZE * TRAIN_SET_BATCHES
 
 HIDDEN_WIDTH = 16
 HIDDEN_LAYERS = 2
-LEARNING_RATE = 0.00125
+LEARNING_RATE = 0.01 / 16
 
 NUM_EPOCHS = 10000
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 if torch.cuda.is_available():
     torch.set_default_tensor_type('torch.cuda.FloatTensor')
-print("Using device:", device)
+print("Using device:", device, "LR:"+str(LEARNING_RATE))
 
 # create training data
 dx = []
