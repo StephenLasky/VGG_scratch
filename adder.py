@@ -11,7 +11,7 @@ A_MAX = 100
 B_MIN = -100
 B_MAX = 100
 
-BATCH_SIZE = 1024 * 16
+BATCH_SIZE = 1024 * 32
 TRAIN_SET_BATCHES = 1
 TRAIN_SET_SIZE = BATCH_SIZE * TRAIN_SET_BATCHES
 
@@ -82,7 +82,7 @@ def adjust_learning_rate(optimizer, epoch):
         # MIN = 0.001
         # if lr < MIN:
         #     lr = MIN
-        if epoch != 0 and epoch % int(NUM_EPOCHS / 10) == 0:
+        if epoch != 0 and epoch % int(NUM_EPOCHS / 5) == 0:
             lr *= 0.5
             print("learning rate:",lr)
         param_group['lr'] = lr
