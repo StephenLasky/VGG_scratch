@@ -15,7 +15,7 @@ BATCH_SIZE = 1024 * 16
 TRAIN_SET_BATCHES = 1
 TRAIN_SET_SIZE = BATCH_SIZE * TRAIN_SET_BATCHES
 
-HIDDEN_WIDTH = 128
+HIDDEN_WIDTH = 64
 HIDDEN_LAYERS = 2
 LEARNING_RATE = 0.000018
 
@@ -76,14 +76,13 @@ class AdderNet(nn.Module):
         return out
 
 def adjust_learning_rate(optimizer, epoch):
-    return
     """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
     for param_group in optimizer.param_groups:
         lr = param_group['lr']
         # MIN = 0.001
         # if lr < MIN:
         #     lr = MIN
-        if epoch % 500 == 0 and epoch != 0:
+        if (NUM_EPOCHS / 10) % epoch == 0 and epoch != 0:
             lr *= 0.5
             print("learning rate:",lr)
         param_group['lr'] = lr
