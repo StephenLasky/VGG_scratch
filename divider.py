@@ -10,7 +10,7 @@ B_MIN = -100
 B_MAX = 100
 
 BATCH_SIZE = 1024 * 4
-TRAIN_SET_BATCHES = 32
+TRAIN_SET_BATCHES = 64
 TRAIN_SET_SIZE = BATCH_SIZE * TRAIN_SET_BATCHES
 
 NUM_TEST = 10
@@ -118,8 +118,8 @@ print("--- %s seconds ---" % (time.time() - train_start_time))
 
 
 # test
-# for test in range(NUM_TEST):
-#     a = float(random.randint(A_MIN, A_MAX) / float(A_MAX))
-#     b = float(random.randint(B_MIN, B_MAX) / float(B_MAX))
-#
-#     print("TEST #"+str(test)+":"+str(A_MAX*a)+"+"+str(B_MAX*b)+"="+str(A_MAX*model(torch.tensor([a,b])).item()))
+for test in range(NUM_TEST):
+    a = float(random.randint(A_MIN, A_MAX) / float(A_MAX))
+    b = float(random.randint(B_MIN, B_MAX) / float(B_MAX))
+
+    print("TEST #"+str(test)+":"+str(A_MAX*a)+"/"+str(B_MAX*b)+"="+str(A_MAX*model(torch.tensor([a,b])).item()))
