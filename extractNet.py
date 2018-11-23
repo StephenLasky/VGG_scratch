@@ -177,4 +177,4 @@ for t in range(NUM_TEST):
     while len(charsY) < MAX_INPUT_STR:
         charsY.append(ord('a') - 1)
 
-    print "GUESS:" + printChrList(charsXInput) + '\n  GOT:' + printChrList(charsY) + '\n'
+    # print "GUESS:" + printChrList(charsXInput) + '\n  GOT:' + printChrList(charsY) + '\n'
