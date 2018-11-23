@@ -20,7 +20,7 @@ NUM_EPOCHS = 500
 HIDDEN_WIDTH = 64
 HIDDEN_LAYERS = 8
 LEARNING_RATE = 0.01
-LR_DECAY = 6  # of times LR decays
+LR_DECAY = 3  # of times LR decays
 
 def printChrList(x):
     out = ""
