@@ -20,7 +20,7 @@ HIDDEN_LAYERS = 2
 LEARNING_RATE = 0.1
 LR_DECAY = 6  # of times LR decays
 
-NUM_EPOCHS = 1000
+NUM_EPOCHS = 500
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 if torch.cuda.is_available():
@@ -121,5 +121,4 @@ print("--- %s seconds ---" % (time.time() - train_start_time))
 for test in range(NUM_TEST):
     a = float(random.randint(A_MIN, A_MAX) / float(A_MAX))
     b = float(random.randint(B_MIN, B_MAX) / float(B_MAX))
-
-    print("TEST #"+str(test)+":"+str(A_MAX*a)+"/"+str(B_MAX*b)+"="+str(A_MAX*model(torch.tensor([a,b])).item()))
+    print("TEST["+str(test)+"]:"+str(a)+"/"+str(b)+"="+str(a/b)+" pred["+str(model(torch.tensor([a,b])).item())+"]")
