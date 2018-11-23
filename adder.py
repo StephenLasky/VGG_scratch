@@ -114,7 +114,6 @@ for epoch in range(NUM_EPOCHS):
         print("Loss @ Epoch "+ str(epoch) +":", epoch_loss / TRAIN_SET_BATCHES)
 print("--- %s seconds ---" % (time.time() - train_start_time))
 
-
 # test
 for test in range(NUM_TEST):
     a = float(random.randint(A_MIN, A_MAX) / float(A_MAX))
