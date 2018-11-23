@@ -11,14 +11,16 @@ A_MAX = 100
 B_MIN = -100
 B_MAX = 100
 
-BATCH_SIZE = 1024 * 32
-TRAIN_SET_BATCHES = 1
+BATCH_SIZE = 1024
+TRAIN_SET_BATCHES = 4
 TRAIN_SET_SIZE = BATCH_SIZE * TRAIN_SET_BATCHES
 
-HIDDEN_WIDTH = 512
-HIDDEN_LAYERS = 4
-LEARNING_RATE = 0.01 / 16
-LR_DECAY = 8
+NUM_TEST = 10
+
+HIDDEN_WIDTH = 16
+HIDDEN_LAYERS = 0
+LEARNING_RATE = 0.1
+LR_DECAY = 10  # of times LR decays
 
 NUM_EPOCHS = 1000
 
@@ -34,19 +36,13 @@ for i in range(TRAIN_SET_BATCHES):
     dx_row = []
     dy_row = []
     for j in range(BATCH_SIZE):
-        a = float(random.randint(A_MIN,A_MAX))
-        b = float(random.randint(B_MIN,B_MAX))
-        if b == 0:
-            b = 1
+        a = float(random.randint(A_MIN,A_MAX) / float(A_MAX))
+        b = float(random.randint(B_MIN,B_MAX) / float(B_MAX))
         dx_row.append([a,b])
         dy_row.append([a+b])
 
     dx.append(torch.tensor(dx_row))
     dy.append(torch.tensor(dy_row))
-
-
-
-
 
 
 class AdderNet(nn.Module):
@@ -79,11 +75,8 @@ def adjust_learning_rate(optimizer, epoch):
     """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
     for param_group in optimizer.param_groups:
         lr = param_group['lr']
-        # MIN = 0.001
-        # if lr < MIN:
-        #     lr = MIN
         if epoch != 0 and epoch % int(NUM_EPOCHS / LR_DECAY) == 0:
-            lr *= 0.5
+            lr *= 0.1
             print("learning rate:",lr)
         param_group['lr'] = lr
 
@@ -102,29 +95,6 @@ lossFunction = nn.L1Loss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 # optimizer = torch.optim.ASGD(model.parameters(), lr=learning_rate)
 
-# print model.forward(torch.Tensor([2,2]))
-
-
-# train_start_time = time.time()
-# for epoch in range(num_epochs):
-#     avgLoss = torch.tensor([0.0], device=device).item()
-#     for i in range(0,len(data)):
-#         d = data[i]
-#         x = d.x
-#         y = d.y
-#
-#         out = model.forward(x)
-#         loss = lossFunction(out, y)
-#         avgLoss += loss.item()
-#
-#         optimizer.zero_grad()
-#         loss.backward()
-#         optimizer.step()
-#
-#     print(model(torch.tensor([float(500), float(1000)], device=device)))
-#     print("avg loss: ", avgLoss / len(data))
-# print("--- %s seconds ---" % (time.time() - train_start_time))
-
 train_start_time = time.time()
 for epoch in range(NUM_EPOCHS):
     epoch_loss = 0.0
@@ -142,9 +112,14 @@ for epoch in range(NUM_EPOCHS):
 
     adjust_learning_rate(optimizer, epoch)
 
-    if epoch % 20 == 0:
+    if epoch != 0 and epoch % int(NUM_EPOCHS / 10) == 0 or epoch == 1:
         print("Loss @ Epoch "+ str(epoch) +":", epoch_loss / TRAIN_SET_BATCHES)
 print("--- %s seconds ---" % (time.time() - train_start_time))
 
 
 # test
+for test in range(NUM_TEST):
+    a = float(random.randint(A_MIN, A_MAX) / float(A_MAX))
+    b = float(random.randint(B_MIN, B_MAX) / float(B_MAX))
+
+    print("TEST #", test, ":", A_MAX*a, "+", B_MAX*b, "=", A_MAX*model(torch.tensor([a,b])))
