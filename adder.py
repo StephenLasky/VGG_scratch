@@ -1,9 +1,7 @@
 import torch
 import torch.nn as nn
-import torchvision
 
 import random
-import math
 import time
 
 A_MIN = -100
