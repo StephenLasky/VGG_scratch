@@ -12,7 +12,7 @@ B_MIN = -100
 B_MAX = 100
 
 BATCH_SIZE = 1024
-TRAIN_SET_BATCHES = 4
+TRAIN_SET_BATCHES = 8
 TRAIN_SET_SIZE = BATCH_SIZE * TRAIN_SET_BATCHES
 
 NUM_TEST = 10
@@ -20,7 +20,7 @@ NUM_TEST = 10
 HIDDEN_WIDTH = 16
 HIDDEN_LAYERS = 0
 LEARNING_RATE = 0.1
-LR_DECAY = 10  # of times LR decays
+LR_DECAY = 6  # of times LR decays
 
 NUM_EPOCHS = 1000
 
@@ -122,4 +122,4 @@ for test in range(NUM_TEST):
     a = float(random.randint(A_MIN, A_MAX) / float(A_MAX))
     b = float(random.randint(B_MIN, B_MAX) / float(B_MAX))
 
-    print("TEST #", test, ":", A_MAX*a, "+", B_MAX*b, "=", A_MAX*model(torch.tensor([a,b])))
+    print("TEST #"+str(test)+":"+str(A_MAX*a)+"+"+str(B_MAX*b)+"="+str(A_MAX*model(torch.tensor([a,b])).item()))
